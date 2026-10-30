@@ -80,47 +80,6 @@ main,
   z-index: 1;
 }
 
-/* ---------- Preloader ---------- */
-
-.preloader {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  display: grid;
-  place-content: center;
-  justify-items: center;
-  gap: 14px;
-  background: var(--bg);
-  transition: opacity 0.6s ease, visibility 0.6s;
-}
-
-.preloader.is-done {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.preloader__count {
-  font-size: 13px;
-  letter-spacing: 0.2em;
-  font-variant-numeric: tabular-nums;
-  color: var(--muted);
-}
-
-.preloader__track {
-  width: 120px;
-  height: 1px;
-  background: var(--line);
-  overflow: hidden;
-}
-
-.preloader__bar {
-  display: block;
-  height: 100%;
-  background: var(--fg);
-  transform: scaleX(0);
-  transform-origin: left;
-}
-
 /* ---------- Cursor ---------- */
 
 .cursor {
@@ -357,7 +316,6 @@ main,
 }
 
 .panel__title,
-.playground__title,
 .contact__title {
   margin: 0;
   font-weight: 400;
@@ -368,8 +326,9 @@ main,
 
 /* ---------- Works ---------- */
 
+/* Height is set in main.ts so the strip's sideways travel matches the scroll. */
 .works {
-  height: 450vh;
+  height: 300vh;
 }
 
 .works__sticky {
@@ -379,6 +338,8 @@ main,
   height: 100svh;
   display: grid;
   grid-template-rows: auto 1fr auto;
+  /* One screen-wide column: the strip overflows it instead of widening it. */
+  grid-template-columns: minmax(0, 1fr);
   padding: 96px var(--gutter) 40px;
 }
 
@@ -395,51 +356,61 @@ main,
   color: var(--muted);
 }
 
-.works__list {
-  position: relative;
+/* A strip of project tiles that slides sideways as you scroll, over the
+   spinning particle spring. */
+.works__track {
+  display: flex;
+  gap: clamp(24px, 4vw, 64px);
+  align-self: center;
+  justify-self: start;
+  width: max-content;
   margin: 0;
   padding: 0;
   list-style: none;
-  align-self: end;
+  will-change: transform;
 }
 
 .work {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  pointer-events: none;
+  width: clamp(260px, 34vw, 560px);
+}
+
+.work__media {
+  display: block;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #16161a;
+  aspect-ratio: 16 / 10;
+}
+
+.work__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s var(--ease-out);
+}
+
+.work__media:hover img {
+  transform: scale(1.04);
 }
 
 .work__title {
-  margin: 0;
+  margin: 20px 0 0;
   font-weight: 400;
-  font-size: clamp(44px, 8vw, 128px);
-  line-height: 0.95;
-  letter-spacing: -0.04em;
-}
-
-.work__title,
-.work__meta {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.5s ease, transform 0.7s var(--ease-out);
+  font-size: clamp(24px, 2.4vw, 38px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
 }
 
 .work__meta {
-  margin: 16px 0 0;
+  margin: 8px 0 0;
   color: var(--muted);
   font-size: 14px;
-  transition-delay: 0.05s;
 }
 
-.work.is-active {
-  pointer-events: auto;
-}
-
-.work.is-active .work__title,
-.work.is-active .work__meta {
-  opacity: 1;
-  transform: none;
+.work__link {
+  margin-left: 14px;
+  color: var(--fg);
 }
 
 .works__progress {
@@ -456,13 +427,15 @@ main,
   transform-origin: left;
 }
 
-/* ---------- Playground ---------- */
+/* ---------- Skills (text over the particle vortex) ---------- */
 
-.playground {
-  height: 260vh;
+/* Tall and sticky: the vortex forms as the section arrives, then holds with
+   the text pinned in the centre until the contact section takes over. */
+.skills {
+  height: 250vh;
 }
 
-.playground__sticky {
+.skills__sticky {
   position: sticky;
   top: 0;
   height: 100vh;
@@ -474,30 +447,59 @@ main,
   padding: 0 var(--gutter);
 }
 
-.playground__sticky .panel__sub {
-  text-align: center;
+.skills__title {
+  margin: 0;
+  font-weight: 400;
+  font-size: clamp(30px, 3.4vw, 52px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--muted);
+}
+
+.skills__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 980px;
+  margin: clamp(24px, 4vh, 40px) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: clamp(26px, 4vw, 60px);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+/* A soft slash after each item, so a wrapped line never starts with one. */
+.skills__list li:not(:last-child)::after {
+  content: '/';
+  margin: 0 0.35em;
+  color: var(--muted);
+  opacity: 0.5;
 }
 
 /* ---------- Contact ---------- */
 
+/* Text on the left; the particle phone fills the right half. */
 .contact {
   min-height: 100vh;
-  display: grid;
-  place-content: center;
-  justify-items: center;
-  text-align: center;
+  display: flex;
+  align-items: center;
   padding: 0 var(--gutter);
 }
 
+.contact__text {
+  max-width: 48%;
+}
+
 .contact__email {
-  margin-top: clamp(40px, 7vh, 72px);
-  padding: 18px 28px;
+  display: inline-block;
+  margin-top: clamp(32px, 6vh, 56px);
   font-size: clamp(20px, 2.6vw, 34px);
   letter-spacing: -0.01em;
 }
 
 .contact__alt {
-  margin: 48px 0 0;
+  margin: 32px 0 0;
   color: var(--muted);
 }
 
@@ -533,6 +535,20 @@ main,
     padding-bottom: 14vh;
   }
 
+  .work {
+    width: 78vw;
+  }
+
+  /* The phone sits above the text on small screens. */
+  .contact {
+    align-items: flex-end;
+    padding-bottom: 12vh;
+  }
+
+  .contact__text {
+    max-width: none;
+  }
+
   .topbar__mark {
     display: none;
   }
@@ -546,16 +562,17 @@ main,
   }
 }
 
-/* ---------- Fallbacks ---------- */
+/* ---------- Intro & fallbacks ---------- */
 
-.no-webgl .preloader {
-  display: none;
+/* Scroll stays locked while the particles spell the name and render the portrait. */
+html.is-loading,
+html.is-loading body {
+  overflow: hidden;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .statement .word > span,
-  .work__title,
-  .work__meta {
+  .work__media img {
     transition: none;
     transform: none;
   }

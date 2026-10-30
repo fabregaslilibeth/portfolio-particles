@@ -1,10 +1,14 @@
 <!doctype html>
+<!-- Double-brace placeholders are filled from VITE_* env variables by plugins/site-content.ts -->
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Your Name — Creative Developer</title>
-    <meta name="description" content="Creative developer building fast, interactive websites with motion and WebGL." />
+    <title>{{name}} — {{role}}</title>
+    <meta name="description" content="{{description}}" />
+    <meta property="og:title" content="{{name}} — {{role}}" />
+    <meta property="og:description" content="{{description}}" />
+    <meta property="og:type" content="website" />
     <meta name="theme-color" content="#0e0e11" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,12 +18,8 @@
     />
   </head>
   <body>
-    <div class="preloader" data-preloader aria-hidden="true">
-      <span class="preloader__count" data-preloader-count>000</span>
-      <span class="preloader__track"><span class="preloader__bar" data-preloader-bar></span></span>
-    </div>
-
-    <div class="field" data-field aria-hidden="true"></div>
+    <!-- The particles spell data-name, then data-role, while the page loads. -->
+    <div class="field" data-field data-name="{{name}}" data-role="{{role}}" aria-hidden="true"></div>
 
     <div class="cursor" data-cursor aria-hidden="true">
       <span class="cursor__dot"></span>
@@ -27,27 +27,24 @@
     </div>
 
     <header class="topbar">
-      <a class="topbar__mark" href="#top" data-dissolve>Your Name</a>
+      <a class="topbar__mark" href="#top" data-dissolve>{{name}}</a>
       <nav class="topbar__nav" aria-label="Sections">
         <a href="#works" data-dissolve>Work</a>
-        <a href="#playground" data-dissolve>Playground</a>
+        <a href="#skills" data-dissolve>Skills</a>
         <a href="#contact" data-dissolve>Contact</a>
       </nav>
     </header>
 
     <main id="top">
       <section class="hero" id="hero">
-        <h1 class="visually-hidden">Your Name, creative developer</h1>
-        <p class="hero__side hero__side--left">Your Name</p>
-        <p class="hero__side hero__side--right">Creative Developer</p>
+        <h1 class="visually-hidden">{{name}}, {{role}}</h1>
+        <p class="hero__side hero__side--left">{{name}}</p>
+        <p class="hero__side hero__side--right">{{role}}</p>
         <p class="hero__scroll"><span>Scroll</span></p>
       </section>
 
       <section class="intro" id="intro">
-        <p class="statement">
-          I turn bold designs into fast, tactile websites — motion, WebGL and front-end engineering for studios,
-          agencies and brands that want the web to feel alive.
-        </p>
+        <p class="statement">{{intro}}</p>
       </section>
 
       <section class="panel" id="globe">
@@ -61,8 +58,8 @@
       <section class="panel" id="country">
         <div class="panel__text">
           <p class="eyebrow">02 — Home</p>
-          <h2 class="panel__title">Based in the <em>Philippines</em></h2>
-          <p class="panel__sub">UTC+8 · open to collaborations worldwide.</p>
+          <h2 class="panel__title">{{locationHeading}}</h2>
+          {{locationNote}}
         </div>
       </section>
 
@@ -70,50 +67,35 @@
         <div class="works__sticky">
           <div class="works__head">
             <p class="eyebrow">03 — Selected work</p>
-            <p class="works__count"><span data-work-index>01</span> / <span data-work-total>04</span></p>
+            <p class="works__count"><span data-work-index>01</span> / <span data-work-total>{{projectCount}}</span></p>
           </div>
-          <ol class="works__list" data-works>
-            <li class="work is-active">
-              <h3 class="work__title">Northwind <em>Studio</em></h3>
-              <p class="work__meta">Brand site · WebGL · 2026</p>
-            </li>
-            <li class="work">
-              <h3 class="work__title">Lumen <em>Records</em></h3>
-              <p class="work__meta">E-commerce · Motion · 2025</p>
-            </li>
-            <li class="work">
-              <h3 class="work__title">Atlas <em>Outdoor</em></h3>
-              <p class="work__meta">Campaign · Three.js · 2025</p>
-            </li>
-            <li class="work">
-              <h3 class="work__title">Kinfolk <em>Café</em></h3>
-              <p class="work__meta">Webflow · Interaction · 2024</p>
-            </li>
+          <ol class="works__track" data-works>
+            {{projects}}
           </ol>
           <div class="works__progress"><span data-work-progress></span></div>
         </div>
       </section>
 
-      <section class="playground" id="playground">
-        <div class="playground__sticky">
-          <p class="eyebrow">04 — Playground</p>
-          <h2 class="playground__title">Experiments <em>in motion</em></h2>
-          <p class="panel__sub">Shaders, physics and small ideas that didn't need a brief.</p>
+      <section class="skills" id="skills">
+        <div class="skills__sticky">
+          <p class="eyebrow">04 — Skills</p>
+          <h2 class="skills__title">Tools I <em>build with</em></h2>
+          <ul class="skills__list">{{skills}}</ul>
         </div>
       </section>
 
       <section class="contact" id="contact">
-        <p class="eyebrow">05 — Contact</p>
-        <h2 class="contact__title">Let's build <em>something</em></h2>
-        <a class="contact__email" href="mailto:hello@yourname.com" data-outline-target data-dissolve>hello@yourname.com</a>
-        <p class="contact__alt">
-          or find me on <a href="#" data-dissolve>LinkedIn</a> and <a href="#" data-dissolve>GitHub</a>
-        </p>
+        <div class="contact__text">
+          <p class="eyebrow">05 — Contact</p>
+          <h2 class="contact__title">Let's build <em>something</em></h2>
+          <a class="contact__email" href="mailto:{{email}}" data-dissolve>{{email}}</a>
+          {{links}}
+        </div>
       </section>
     </main>
 
     <footer class="footer">
-      <span>© 2026 Your Name</span>
+      <span>© {{year}} {{name}}</span>
       <span>No cookies, no tracking.</span>
     </footer>
 

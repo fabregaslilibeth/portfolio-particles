@@ -1,3 +1,11 @@
 node_modules
 dist
 .DS_Store
+
+# Personal details — see .env.example
+.env
+.env.*
+!.env.example
+
+# Windows download markers copied into WSL
+*:Zone.Identifier
